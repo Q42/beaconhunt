@@ -1,32 +1,36 @@
 const Beacons = new Mongo.Collection('beacons');
 if (Meteor.isServer) {
-  if (Beacons.find().count() != 1) {
-    console.log('Reinserting beacons in db');
-    Beacons.remove({});
-    Beacons.insert({
-      uuid: 'b9407f30-f5f8-466e-aff9-25556b57fe6d',
-      major: 38008,
-      minor: 37725,
-      identifier: "Kevin 38008.37725"
-    });
-  }
+  Beacons.remove({});
+  Meteor.startup(() => {
+    if (Beacons.find().count() != 1) {
+      console.log('Reinserting beacons in db');
+      Beacons.remove({});
+      Beacons.insert({
+        uuid: 'b9407f30-f5f8-466e-aff9-25556b57fe6d',
+        // major: 38008,
+        // minor: 37725,
+        identifier: "Kevin"
+      });
+    }
+  });
 }
 
 if (Meteor.isCordova) {
   Meteor.startup(() => {
-    Tracker.autorun(function () {
+    Meteor.setTimeout(function() {
       Beacons.find().forEach((myBeacon, i) => {
-        console.log('Searching for beacon', myBeacon.identifier);
-        let reactiveBeaconRegion = new ReactiveBeaconRegion(_.pick(myBeacon, 'uuid', 'major', 'minor', 'identifier'));
+        var myBeaconProps = _.pick(myBeacon, 'uuid', 'major', 'minor', 'identifier');
+        console.log('Searching for beacon', myBeaconProps);
+        let reactiveBeaconRegion = new ReactiveBeaconRegion(myBeaconProps);
         Tracker.autorun(function () {
-          var beaconRegion = reactiveBeaconRegion.getBeaconRegion();
-          if (beaconRegion) {
+          if (reactiveBeaconRegion.getBeaconRegion().inRegion) {
+            var beaconRegion = reactiveBeaconRegion.getBeaconRegion();
+            console.log('found', beaconRegion);
             Beacons.update({_id:myBeacon._id}, {$set: { found: beaconRegion }})
-            console.log('found in region:', beaconRegion.inRegion);
           }
         });
       });
-    });
+    }, 1000);
   });
 }
 
