@@ -1,0 +1,17 @@
+<head>
+  <title>beaconhunt</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> beacons}}
+</body>
+
+<template name="beacons">
+  <ul>
+  {{#each beacons}}
+    <li>{{identifier}}<br />Proximity {{proximity}}<br />Accuracy {{accuracy}}<br />Range {{range}}</li>
+  {{/each}}
+  </ul>
+</template>
