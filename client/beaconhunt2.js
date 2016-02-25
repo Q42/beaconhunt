@@ -1,42 +1,84 @@
 const step = new ReactiveVar('welcome');
 const imageWidth = 3300;
 const imageHeight = 2550;
+const gpsTopleft = [28.150085, -15.430711];
+const gpsBottomright = [28.149517, -15.429799];
+// const gpsTopleft = [28.138081, -15.437219];
+// const gpsBottomright = [28.137953, -15.437022];
 
 let screenWidth = 980;
 let screenHeight = 1543;
 
+convertToPixels = function(latlng) {
+  (2550 - 567) / (28.137901 - 28.137975)
+  const pxHeight = (imageHeight - screenHeight) / (gpsTopleft[0] - gpsBottomright[0]);
+  const pxWidth = (imageWidth - screenWidth) / (gpsBottomright[1] - gpsTopleft[1]);
+
+  var pxTop = imageHeight - ((latlng.lat - gpsBottomright[0]) * pxHeight);
+  var pxLeft = (latlng.lng - gpsTopleft[1]) * pxWidth;
+
+  return [pxLeft, pxTop];
+}
+
+Meteor.startup(() => {
+  Geolocation.latLng();
+})
+
 Template.layout.helpers({
   stepIsWelcome() {
     return step.get() == 'welcome';
+  },
+  stepIsFound() {
+    return step.get() == 'found';
   }
 });
+
+var prevPx = {};
+moveMap = function() {
+  var px = convertToPixels(Geolocation.latLng());
+  if (px[0] == prevPx[0] && px[1] == prevPx[1]) {
+    console.log('same location', px);
+    Meteor.setTimeout(moveMap, 1500);
+    return;
+  }
+  prevPx = px;
+  console.log('scrolling to', px);
+  var isKevinInScreen = px[1] > 1800 && px[1] < 1900 && px[0] > 90 && px[1] < 160;
+  $('#waldocontainer').animate({
+    scrollLeft: px[0],
+    scrollTop: px[1]
+  }, 1500, 'linear', isKevinInScreen ? win : moveMap);
+}
+
+win = function() {
+  step.set('found');
+}
 
 Template.welcomeTemplate.events({
   'click button'() {
     step.set('find');
-    Meteor.setTimeout(() => {
+    $('#waldocontainer').animate({opacity:'1.0'}, 400, 'linear', () => {
       screenWidth = $('#waldocontainer').width();
       screenHeight = $('#waldocontainer').height();
       const left2 = imageWidth - screenWidth;
       const top2 = imageHeight - screenHeight;
-      console.log('scrolling to', top2, left2);
       $('#waldocontainer').animate({
         scrollTop: top2,
-        scrollLeft: left2}, 3000, () => {
-          const left = imageWidth / 2 - screenWidth / 2;
-          const top = imageHeight / 2 - screenHeight / 2;
-          console.log('scrolling to', top, left);
-          $('#waldocontainer').animate({
-            scrollLeft: left,
-            scrollTop: top
-          }, 1500);
-      });
-    }, 1000)
+        scrollLeft: left2}, 3000, moveMap);
+    })
   }
 })
 
 Template.beacons.helpers({
   beacons() {
     return Beacons.find({timestamp:{$gte: Chronos.currentTime().getTime()-2000}});
+  }
+});
+
+Template.waldoTemplate.helpers({
+  location() {
+    var latlng = Geolocation.latLng();
+    // console.log(latlng);
+    return JSON.stringify(latlng);
   }
 });

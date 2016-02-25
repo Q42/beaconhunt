@@ -8,11 +8,24 @@
 </body>
 
 <template name="layout">
+  <div id="waldocontainer">
+    <div id="waldo">
+      <div id="kevin"></div>
+    </div>
+  </div>
   {{#if stepIsWelcome}}
     {{> welcomeTemplate}}
   {{else}}
-    {{> waldoTemplate}}
+    {{#if stepIsFound}}
+      {{> winTemplate}}
+    {{else}}
+      {{> waldoTemplate}}
+    {{/if}}
   {{/if}}
+</template>
+
+<template name="winTemplate">
+  Win! You found him :)
 </template>
 
 <template name="welcomeTemplate">
@@ -27,10 +40,8 @@
 
 <template name="waldoTemplate">
   <div id="txt">
-    {{> beacons}}
-  </div>
-  <div id="waldocontainer">
-    <div id="waldo"></div>
+    {{location.lat}},{{location.lng}}
+    <!-- {{> beacons}} -->
   </div>
 </template>
 

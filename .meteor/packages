@@ -22,3 +22,5 @@ mbanting:reactive-ibeacons
 dburles:collection-helpers
 remcoder:chronos
 reactive-var
+mrt:jquery-easing
+mdg:geolocation
