@@ -21,3 +21,4 @@ insecure                # Allow all DB writes from clients (for prototyping)
 mbanting:reactive-ibeacons
 dburles:collection-helpers
 remcoder:chronos
+reactive-var

@@ -1,12 +1,38 @@
 <head>
-  <title>beaconhunt</title>
+  <title>Where's Kevin?</title>
+  <link href='https://fonts.googleapis.com/css?family=Walter+Turncoat' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
-  <h1>I see these beacons:</h1>
-
-  {{> beacons}}
+  {{> layout}}
 </body>
+
+<template name="layout">
+  {{#if stepIsWelcome}}
+    {{> welcomeTemplate}}
+  {{else}}
+    {{> waldoTemplate}}
+  {{/if}}
+</template>
+
+<template name="welcomeTemplate">
+  <div class="welcome">
+    <h1>Can you help me out?</h1>
+    <p>I lost my beacon, and he's afraid of the dark. Can you help me find him before the sun sets?</p>
+    <p>His name is Kevin, he's pretty big and wearing a purple overall.</p>
+    <p>Thnx!</p>
+    <button>Find Kevin</button>
+  </div>
+</template>
+
+<template name="waldoTemplate">
+  <div id="txt">
+    {{> beacons}}
+  </div>
+  <div id="waldocontainer">
+    <div id="waldo"></div>
+  </div>
+</template>
 
 <template name="beacons">
   <ul>
