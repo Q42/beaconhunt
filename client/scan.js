@@ -7,13 +7,7 @@ if (Meteor.isCordova) {
       });
       Tracker.autorun(function () {
         if (reactiveBeaconRegion.getBeaconRegion().inRegion) {
-          var foundBeacons = reactiveBeaconRegion.getBeaconRegion().beacons;
-          foundBeacons.forEach(function(foundBeacon) {
-            var version = foundBeacon.major + '.' + foundBeacon.minor;
-            Beacons.upsert({_id:foundBeacon.uuid + version}, {$set:{
-              identifier: version, found:foundBeacon, isKevin: version == Kevin
-            }})
-          });
+          foundBeacons(reactiveBeaconRegion.getBeaconRegion().beacons);
         }
       });
     });
