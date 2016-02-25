@@ -25,7 +25,9 @@
 </template>
 
 <template name="winTemplate">
-  Win! You found him :)
+  <div id="win">
+    WIN!<br /><br />You found him :)
+  </div>
 </template>
 
 <template name="welcomeTemplate">
@@ -35,25 +37,26 @@
     <p>His name is Kevin, he's pretty big and wearing a purple overall.</p>
     <p>Thnx!</p>
     <button>Find Kevin</button>
-  </div>
-</template>
-
-<template name="waldoTemplate">
-  <div id="txt">
-    {{location.lat}},{{location.lng}}
     <!-- {{> beacons}} -->
   </div>
 </template>
 
+<template name="waldoTemplate">
+  <!-- <div id="txt"> -->
+    <!-- {{location.lat}}<br />{{location.lng}} -->
+    {{> beacons}}
+  <!-- </div> -->
+</template>
+
 <template name="beacons">
-  <ul>
+  {{#if kevin}}
+    <div id="foundKevin">Found kevin at {{kevin.accuracy}}m</div>
+  {{/if}}
+  <!-- <ul>
   {{#each beacons}}
     <li>
-      {{identifier}}<br />
-      Proximity {{proximity}}<br />
-      Accuracy {{accuracy}}<br />
-      Range {{range}}
+      {{identifier}} at range {{range}}
     </li>
   {{/each}}
-  </ul>
+  </ul> -->
 </template>

@@ -72,6 +72,12 @@ Template.welcomeTemplate.events({
 Template.beacons.helpers({
   beacons() {
     return Beacons.find({timestamp:{$gte: Chronos.currentTime().getTime()-2000}});
+  },
+  kevin() {
+    return Beacons.findOne({
+      isKevin: true,
+      timestamp:{$gte: Chronos.currentTime().getTime()-2000}
+    });
   }
 });
 
