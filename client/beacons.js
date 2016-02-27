@@ -1,9 +1,19 @@
 Beacons = new Mongo.Collection(null);
-Kevin = '38008.37725';
+Kevin = '38008.37725'; // mine purple
+description = 'His name is Kevin, he\'s pretty big and looks a little purple :s';
+
+// Kevin = '59685.38452'; // evening
+// description = 'His name is Kevin, he\'s pretty big and looks a little green :s';
+
+// Kevin = ''; // JJ
+// description = 'His name is Kevin, he\'s pretty big and broke his glasses last week.';
+
 lookingForBeacons = [
   {
-    uuid: 'b9407f30-f5f8-466e-aff9-25556b57fe6d', // mine
+    // uuid: 'b9407f30-f5f8-466e-aff9-25556b57fe6d', // mine purple
     // uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF47CFFF8B8', // theirs
+    uuid: 'b9407f30-f5f8-466e-aff9-25556b57fe6d', // evening
+    // uuid: '', // JJ
     // major: 38008,
     // minor: 37725
     identifier: 'kevins',

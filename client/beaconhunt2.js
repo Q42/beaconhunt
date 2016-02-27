@@ -1,10 +1,10 @@
 const step = new ReactiveVar('welcome');
 const imageWidth = 3300;
 const imageHeight = 2550;
-const gpsTopleft = [28.150085, -15.430711];
-const gpsBottomright = [28.149517, -15.429799];
-// const gpsTopleft = [28.138081, -15.437219];
-// const gpsBottomright = [28.137953, -15.437022];
+const gpsTopleft = [28.150085, -15.430711]; // coworking
+const gpsBottomright = [28.149517, -15.429799]; // coworking
+// const gpsTopleft = [28.138081, -15.437219]; // hostel
+// const gpsBottomright = [28.137953, -15.437022]; // hostel
 
 let screenWidth = 980;
 let screenHeight = 1543;
@@ -43,7 +43,9 @@ moveMap = function() {
   }
   prevPx = px;
   console.log('scrolling to', px);
-  var isKevinInScreen = px[1] > 1800 && px[1] < 1900 && px[0] > 90 && px[1] < 160;
+  // px = [100,1700];
+  var isKevinInScreen = px[1] > 1600 && px[0] < 200;
+  console.log('kevininsc', isKevinInScreen);
   $('#waldocontainer').animate({
     scrollLeft: px[0],
     scrollTop: px[1]
@@ -53,6 +55,12 @@ moveMap = function() {
 win = function() {
   step.set('found');
 }
+
+Template.welcomeTemplate.helpers({
+  description() {
+    return description;
+  }
+});
 
 Template.welcomeTemplate.events({
   'click button'() {
